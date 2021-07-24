@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="215" height="268.641" viewBox="0 0 215 268.641">
+  <g id="small_logo" data-name="small logo" transform="translate(-82.544 -118.359)">
+    <text id="The" transform="translate(154.544 311)" fill="#4a4a4a" font-size="39" font-family="BrushScriptMT, Brush Script MT"><tspan x="0" y="0">The</tspan></text>
+    <line id="Line_1" data-name="Line 1" x2="30.74" transform="translate(132.256 303.957)" fill="none" stroke="#4a4a4a" stroke-width="2"/>
+    <line id="Line_2" data-name="Line 2" x2="30.74" transform="translate(206.107 303.982)" fill="none" stroke="#4a4a4a" stroke-width="2"/>
+    <g id="locationIcon">
+      <path id="Path_1" data-name="Path 1" d="M52.258,0a52.258,52.258,0,0,1,52.258,52.258c0,28.862-52.258,108.311-52.258,108.311S0,81.12,0,52.258A52.258,52.258,0,0,1,52.258,0Z" transform="translate(132.256 118.859)" fill="#dd4b39" stroke="#707070" stroke-width="1"/>
+    </g>
+    <text id="Locals_" data-name="Locals
+" transform="translate(82.544 364)" fill="#4a4a4a" font-size="65" font-family="Montserrat-Bold, Montserrat" font-weight="700"><tspan x="0" y="0">Locals</tspan><tspan x="0" y="7"></tspan></text>
+    <g id="bag" transform="translate(152.535 140.859)">
+      <path id="secondary" d="M32.667,37.239a3.524,3.524,0,0,1-3.524-3.524V16.1a7.048,7.048,0,1,0-14.1,0V33.715a3.524,3.524,0,1,1-7.048,0V16.1a14.1,14.1,0,1,1,28.191,0V33.715A3.524,3.524,0,0,1,32.667,37.239Z" transform="translate(9.884 -7)" fill="#fff" stroke="#707070" stroke-width="1"/>
+      <path id="primary" d="M56.893,13.519A7.048,7.048,0,0,0,49.846,7H14.114a7.048,7.048,0,0,0-7.048,6.519L4.106,52.282a7,7,0,0,0,7.013,7.576H52.841a7,7,0,0,0,7.013-7.576Z" transform="translate(0 12.619)" fill="#fff" stroke="#707070" stroke-width="1"/>
+    </g>
+  </g>
+</svg>
