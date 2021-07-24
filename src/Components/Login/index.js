@@ -1,21 +1,29 @@
 import React, { useState } from "react";
 import {
-  Typography,
   Paper,
-  Avatar,
   Button,
   FormControl,
-  Input,
-  InputLabel,
   TextField,
   InputAdornment,
 } from "@material-ui/core";
 import withStyles from "@material-ui/core/styles/withStyles";
-import { Link, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { Phone, Lock } from "@material-ui/icons";
+//import { Background } from  "../../../public/images/icons/login-bg.jpg"
 //import firebase from '../firebase'
 
 const styles = (theme) => ({
+  container: {
+    backgroundImage: `url("/images/icons/login-bg-1.jpg")`,
+    height: "100vh",
+    backgroundRepeat: "no-repeat",
+    backgroundSize: "auto",
+    paddingTop: "40px",
+    "@media (max-width: 640px)": {
+      backgroundImage: "none",
+      paddingTop: "0px",
+    },
+  },
   main: {
     width: "auto",
     display: "block", // Fix IE 11 issue.
@@ -38,7 +46,7 @@ const styles = (theme) => ({
   },
   avatar: {
     margin: theme.spacing.unit,
-   // backgroundColor: theme.palette.secondary.main,
+    // backgroundColor: theme.palette.secondary.main,
   },
   form: {
     width: "100%", // Fix IE 11 issue.
@@ -49,10 +57,10 @@ const styles = (theme) => ({
     borderRadius: "5em",
     background: "#D94939",
     color: "#fff",
-	'&:hover': {
-		background: "#D94939",
-		alpha: 0.1
-	 },
+    "&:hover": {
+      background: "#D94939",
+      alpha: 0.1,
+    },
   },
   input: {
     "& input[type=number]": {
@@ -73,7 +81,7 @@ const styles = (theme) => ({
       "&.Mui-focused fieldset": {
         "border-color": "#D94939",
       },
-    }
+    },
   },
 });
 
@@ -82,11 +90,13 @@ function SignIn(props) {
 
   const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
+  const [isValidMobile, setIsValidMobile] = useState(false);
+  const [isValidPassword, setIsValidPassword] = useState(false);
 
   return (
-    <main className={classes.main}>
-      <Paper className={classes.paper}>
-        {/* <Avatar variant="rounded" className={classes.avatar}> */}
+    <div className={classes.container}>
+      <main className={classes.main}>
+        <Paper className={classes.paper}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="215"
@@ -140,8 +150,7 @@ function SignIn(props) {
               </g>
               <text
                 id="Locals_"
-                data-name="Locals
-"
+                data-name="Locals"
                 transform="translate(82.544 364)"
                 fill="#4a4a4a"
                 font-size="65"
@@ -173,65 +182,89 @@ function SignIn(props) {
               </g>
             </g>
           </svg>
-        {/* </Avatar> */}
-        <form
-          className={classes.form}
-		  autoComplete="off"
-          onSubmit={(e) => e.preventDefault() && false}
-        >
-          <FormControl margin="normal" required fullWidth autoComplete="off">
-            <TextField
-              className={classes.input}
-              id="outlined-number"
-              label="Mobile Number"
-              type="number"
-              variant="outlined"
-              value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Phone />
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </FormControl>
-          <FormControl margin="normal" required fullWidth>
-            <TextField
-              className={classes.input}
-			  id="outlined-password-input"
-              label="Password"
-              type="password"
-              variant="outlined"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Lock />
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </FormControl>
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            onClick={login}
-            size="large"
-            className={classes.submit}
+          <form
+            className={classes.form}
+            onSubmit={(e) => e.preventDefault() && false}
           >
-            Log In
-          </Button>
-        </form>
-      </Paper>
-    </main>
+            <FormControl margin="normal" required fullWidth>
+              <TextField
+                className={classes.input}
+                id="outlined-number"
+                label="Mobile Number"
+                type="number"
+                variant="outlined"
+                value={phoneNumber}
+                onChange={(e) =>
+                  e.target.value.length <= 10
+                    ? setPhoneNumber(e.target.value)
+                    : null
+                }
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Phone />
+                    </InputAdornment>
+                  ),
+                }}
+                error={isValidMobile ? true : false}
+                helperText={
+                  isValidMobile ? "Please enter only 10 digits number" : null
+                }
+              />
+            </FormControl>
+            <FormControl margin="normal" required fullWidth>
+              <TextField
+                className={classes.input}
+                id="outlined-password-input"
+                label="Password"
+                type="password"
+                variant="outlined"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                inputProps={{
+                  maxLength: 12,
+                }}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Lock />
+                    </InputAdornment>
+                  ),
+                }}
+                error={isValidPassword ? true : false}
+                helperText={
+                  isValidPassword
+                    ? "Please enter only 5-12 digits password"
+                    : null
+                }
+              />
+            </FormControl>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              onClick={login}
+              size="large"
+              className={classes.submit}
+            >
+              Log In
+            </Button>
+          </form>
+        </Paper>
+      </main>
+    </div>
   );
 
   async function login() {
     try {
+      if (phoneNumber.length !== 10) {
+        setIsValidMobile(true);
+      } else if (password.length < 5) {
+        setIsValidPassword(true);
+      } else {
+        setIsValidMobile(false);
+        setIsValidPassword(false);
+      }
       //await firebase.login(email, password)
       // props.history.replace("/dashboard");
     } catch (error) {
