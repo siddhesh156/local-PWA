@@ -83,6 +83,19 @@ const styles = (theme) => ({
       },
     },
   },
+  forgotTxt:{
+	  color: '#245163',
+	  marginTop: '25px',
+	  cursor: "pointer"
+  },
+  bottomTxt:{
+	marginTop: '60px',
+	"& span":{
+		color: '#D94939',
+		textDecoration: "underline",
+		cursor: "pointer"
+	}
+},
 });
 
 function SignIn(props) {
@@ -250,6 +263,8 @@ function SignIn(props) {
               Log In
             </Button>
           </form>
+		  <div className={classes.forgotTxt}>Forgotten password ?</div>
+		  <div className={classes.bottomTxt}>Don't have an account? <span>Register now</span> </div>
         </Paper>
       </main>
     </div>
