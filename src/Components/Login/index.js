@@ -9,8 +9,6 @@ import {
 import withStyles from "@material-ui/core/styles/withStyles";
 import { withRouter } from "react-router-dom";
 import { Phone, Lock } from "@material-ui/icons";
-//import { Background } from  "../../../public/images/icons/login-bg.jpg"
-//import firebase from '../firebase'
 
 const styles = (theme) => ({
   container: {
@@ -43,10 +41,6 @@ const styles = (theme) => ({
     padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${
       theme.spacing.unit * 3
     }px`,
-  },
-  avatar: {
-    margin: theme.spacing.unit,
-    // backgroundColor: theme.palette.secondary.main,
   },
   form: {
     width: "100%", // Fix IE 11 issue.
@@ -263,7 +257,7 @@ function SignIn(props) {
               Log In
             </Button>
           </form>
-		  <div className={classes.forgotTxt}>Forgotten password ?</div>
+		  <div className={classes.forgotTxt} onClick={()=>props.history.push('/forgetPassword')}>Forgotten password ?</div>
 		  <div className={classes.bottomTxt}>Don't have an account? <span>Register now</span> </div>
         </Paper>
       </main>
@@ -280,7 +274,6 @@ function SignIn(props) {
         setIsValidMobile(false);
         setIsValidPassword(false);
       }
-      //await firebase.login(email, password)
       // props.history.replace("/dashboard");
     } catch (error) {
       alert(error.message);
