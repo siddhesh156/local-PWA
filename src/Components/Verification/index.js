@@ -6,7 +6,7 @@ import {
   InputAdornment,
 } from "@material-ui/core";
 import withStyles from "@material-ui/core/styles/withStyles";
-import { Phone, ArrowBack } from "@material-ui/icons";
+import { Chat, ArrowBack } from "@material-ui/icons";
 
 const styles = (theme) => ({
   container: {
@@ -100,11 +100,12 @@ const styles = (theme) => ({
   },
 });
 
-function ForgetPassword(props) {
+
+function Verification(props) {
   const { classes } = props;
 
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [isValidMobile, setIsValidMobile] = useState(false);
+  const [otp, setOTP] = useState("");
+  const [isValidOTP, setIsValidOTP] = useState(false);
 
   return (
     <div className={classes.container}>
@@ -116,32 +117,32 @@ function ForgetPassword(props) {
           >
             <ArrowBack className={classes.backBtn} onClick={()=> props.history.goBack()} />
             <div className={classes.title}>
-              Forget Password
+              Verification
               <p></p>
             </div>
             <FormControl margin="normal" required fullWidth>
               <TextField
                 className={classes.input}
                 id="outlined-number"
-                label="Mobile Number"
+                label="Your OTP"
                 type="number"
                 variant="outlined"
-                value={phoneNumber}
+                value={otp}
                 onChange={(e) =>
-                  e.target.value.length <= 10
-                    ? setPhoneNumber(e.target.value)
+                  e.target.value.length <= 6
+                    ? setOTP(e.target.value)
                     : null
                 }
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <Phone />
+                      <Chat />
                     </InputAdornment>
                   ),
                 }}
-                error={isValidMobile ? true : false}
+                error={isValidOTP ? true : false}
                 helperText={
-                  isValidMobile ? "Please enter only 10 digits number" : null
+                  isValidOTP ? "Please enter only 6 digits number" : null
                 }
               />
             </FormControl>
@@ -175,11 +176,11 @@ function ForgetPassword(props) {
 
   async function submit() {
     try {
-      if (phoneNumber.length !== 10) {
-        setIsValidMobile(true);
+      if (otp.length !== 6) {
+        setIsValidOTP(true);
       } else {
-        setIsValidMobile(false);
-        props.history.replace("/verification");
+        setIsValidOTP(false);
+        props.history.replace("/resetPassword");
       }
        
     } catch (error) {
@@ -188,4 +189,4 @@ function ForgetPassword(props) {
   }
 }
 
-export default withStyles(styles)(ForgetPassword);
+export default withStyles(styles)(Verification);

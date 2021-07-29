@@ -6,7 +6,7 @@ import {
   InputAdornment,
 } from "@material-ui/core";
 import withStyles from "@material-ui/core/styles/withStyles";
-import { Phone, ArrowBack } from "@material-ui/icons";
+import { Lock, ArrowBack } from "@material-ui/icons";
 
 const styles = (theme) => ({
   container: {
@@ -100,11 +100,15 @@ const styles = (theme) => ({
   },
 });
 
-function ForgetPassword(props) {
+
+function ResetPassword(props) {
   const { classes } = props;
 
-  const [phoneNumber, setPhoneNumber] = useState("");
-  const [isValidMobile, setIsValidMobile] = useState(false);
+  const [password, setPassword] = useState("");
+  const [isValidPassword, setIsValidPassword] = useState(false);
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [isValidConfirmPassword, setIsValidConfirmPassword] = useState(false);
+  const [isValidMessage,setIsValidMessage] = useState("Please enter only 5-12 digits password");
 
   return (
     <div className={classes.container}>
@@ -116,35 +120,64 @@ function ForgetPassword(props) {
           >
             <ArrowBack className={classes.backBtn} onClick={()=> props.history.goBack()} />
             <div className={classes.title}>
-              Forget Password
+             Password
               <p></p>
             </div>
             <FormControl margin="normal" required fullWidth>
               <TextField
                 className={classes.input}
-                id="outlined-number"
-                label="Mobile Number"
-                type="number"
+                id="outlined-password-input"
+                label="Your Password"
+                type="text"
                 variant="outlined"
-                value={phoneNumber}
-                onChange={(e) =>
-                  e.target.value.length <= 10
-                    ? setPhoneNumber(e.target.value)
-                    : null
-                }
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                inputProps={{
+                  maxLength: 12,
+                }}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <Phone />
+                      <Lock />
                     </InputAdornment>
                   ),
                 }}
-                error={isValidMobile ? true : false}
+                error={isValidPassword ? true : false}
                 helperText={
-                  isValidMobile ? "Please enter only 10 digits number" : null
+                  isValidPassword
+                    ? "Please enter only 5-12 digits password"
+                    : null
                 }
               />
             </FormControl>
+            <FormControl margin="normal" required fullWidth>
+              <TextField
+                className={classes.input}
+                id="outlined-password-input"
+                label="Confirm Password"
+                type="text"
+                variant="outlined"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                inputProps={{
+                  maxLength: 12,
+                }}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Lock />
+                    </InputAdornment>
+                  ),
+                }}
+                error={isValidConfirmPassword ? true : false}
+                helperText={
+                  isValidConfirmPassword
+                    ? isValidMessage
+                    : null
+                }
+              />
+            </FormControl>
+            
             <div className={classes.submit}>
               <div onClick={()=>submit()}>
                 <svg
@@ -175,11 +208,22 @@ function ForgetPassword(props) {
 
   async function submit() {
     try {
-      if (phoneNumber.length !== 10) {
-        setIsValidMobile(true);
-      } else {
-        setIsValidMobile(false);
-        props.history.replace("/verification");
+        if (password.length < 5) {
+            setIsValidPassword(true);
+          }
+          else if (confirmPassword.length < 5) {
+            setIsValidPassword(false);
+            setIsValidConfirmPassword(true);
+            setIsValidMessage("Please enter only 5-12 digits password");
+          }
+          else if (password !== confirmPassword) {
+            setIsValidPassword(false);
+            setIsValidMessage("Password doesn't match");
+            setIsValidConfirmPassword(true);
+          } else {
+        setIsValidPassword(false);
+        setIsValidConfirmPassword(false);
+        props.history.replace("/login");
       }
        
     } catch (error) {
@@ -188,4 +232,4 @@ function ForgetPassword(props) {
   }
 }
 
-export default withStyles(styles)(ForgetPassword);
+export default withStyles(styles)(ResetPassword);

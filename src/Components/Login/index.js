@@ -7,7 +7,6 @@ import {
   InputAdornment,
 } from "@material-ui/core";
 import withStyles from "@material-ui/core/styles/withStyles";
-import { withRouter } from "react-router-dom";
 import { Phone, Lock } from "@material-ui/icons";
 
 const styles = (theme) => ({
@@ -25,29 +24,29 @@ const styles = (theme) => ({
   main: {
     width: "auto",
     display: "block", // Fix IE 11 issue.
-    marginLeft: theme.spacing.unit * 3,
-    marginRight: theme.spacing.unit * 3,
-    [theme.breakpoints.up(400 + theme.spacing.unit * 3 * 2)]: {
+    marginLeft: theme.spacing(3),
+    marginRight: theme.spacing(3),
+    [theme.breakpoints.up(400 + theme.spacing(3*2))]: {
       width: 400,
       marginLeft: "auto",
       marginRight: "auto",
     },
   },
   paper: {
-    marginTop: theme.spacing.unit * 8,
+    marginTop: theme.spacing(8),
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px ${
-      theme.spacing.unit * 3
+    padding: `${theme.spacing(2)}px ${theme.spacing(3)}px ${
+      theme.spacing(3)
     }px`,
   },
   form: {
     width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing.unit,
+    marginTop: theme.spacing(1),
   },
   submit: {
-    marginTop: theme.spacing.unit * 3,
+    marginTop: theme.spacing(3),
     borderRadius: "5em",
     background: "#D94939",
     color: "#fff",
@@ -119,8 +118,8 @@ function SignIn(props) {
                 id="The"
                 transform="translate(154.544 311)"
                 fill="#4a4a4a"
-                font-size="39"
-                font-family="BrushScriptMT, Brush Script MT"
+                fontSize="39"
+                fontFamily="BrushScriptMT, Brush Script MT"
               >
                 <tspan x="0" y="0">
                   The
@@ -133,7 +132,7 @@ function SignIn(props) {
                 transform="translate(132.256 303.957)"
                 fill="none"
                 stroke="#4a4a4a"
-                stroke-width="2"
+                strokeWidth="2"
               />
               <line
                 id="Line_2"
@@ -142,7 +141,7 @@ function SignIn(props) {
                 transform="translate(206.107 303.982)"
                 fill="none"
                 stroke="#4a4a4a"
-                stroke-width="2"
+                strokeWidth="2"
               />
               <g id="locationIcon">
                 <path
@@ -152,7 +151,7 @@ function SignIn(props) {
                   transform="translate(132.256 118.859)"
                   fill="#dd4b39"
                   stroke="#707070"
-                  stroke-width="1"
+                  strokeWidth="1"
                 />
               </g>
               <text
@@ -160,9 +159,9 @@ function SignIn(props) {
                 data-name="Locals"
                 transform="translate(82.544 364)"
                 fill="#4a4a4a"
-                font-size="65"
-                font-family="Montserrat-Bold, Montserrat"
-                font-weight="700"
+                fontSize="65"
+                fontFamily="Montserrat-Bold, Montserrat"
+                fontWeight="700"
               >
                 <tspan x="0" y="0">
                   Locals
@@ -176,7 +175,7 @@ function SignIn(props) {
                   transform="translate(9.884 -7)"
                   fill="#fff"
                   stroke="#707070"
-                  stroke-width="1"
+                  strokeWidth="1"
                 />
                 <path
                   id="primary"
@@ -184,7 +183,7 @@ function SignIn(props) {
                   transform="translate(0 12.619)"
                   fill="#fff"
                   stroke="#707070"
-                  stroke-width="1"
+                  strokeWidth="1"
                 />
               </g>
             </g>
@@ -258,7 +257,7 @@ function SignIn(props) {
             </Button>
           </form>
 		  <div className={classes.forgotTxt} onClick={()=>props.history.push('/forgetPassword')}>Forgotten password ?</div>
-		  <div className={classes.bottomTxt}>Don't have an account? <span>Register now</span> </div>
+		  <div className={classes.bottomTxt}>Don't have an account? <span onClick={()=>props.history.push('/signUp')}>Register now</span> </div>
         </Paper>
       </main>
     </div>
@@ -276,9 +275,9 @@ function SignIn(props) {
       }
       // props.history.replace("/dashboard");
     } catch (error) {
-      alert(error.message);
+      //alert(error.message);
     }
   }
 }
 
-export default withRouter(withStyles(styles)(SignIn));
+export default withStyles(styles)(SignIn);
