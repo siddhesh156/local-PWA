@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Paper,
   FormControl,
@@ -8,99 +8,98 @@ import {
 import withStyles from "@material-ui/core/styles/withStyles";
 import { Phone, ArrowBack, Person, Mail, LocationOn } from "@material-ui/icons";
 import { validateEmail } from "../../helper";
+import { getLocationFromIP } from "../GoogleGeoLocation";
 
 const styles = (theme) => ({
-    container: {
-      backgroundImage: `url("/images/icons/login-bg-1.jpg")`,
-      height: "100vh",
-      backgroundRepeat: "no-repeat",
-      backgroundSize: "auto",
-      paddingTop: "40px",
-      "@media (max-width: 640px)": {
-        backgroundImage: "none",
-        paddingTop: "0px",
-        background: "rgba(217,73,57,0.95)"
-        
+  container: {
+    backgroundImage: `url("/images/icons/login-bg-1.jpg")`,
+    height: "100vh",
+    backgroundRepeat: "no-repeat",
+    backgroundSize: "auto",
+    paddingTop: "40px",
+    "@media (max-width: 640px)": {
+      backgroundImage: "none",
+      paddingTop: "0px",
+      background: "rgba(217,73,57,0.95)",
+    },
+  },
+  main: {
+    width: "auto",
+    display: "block", // Fix IE 11 issue.
+    marginLeft: theme.spacing(3),
+    marginRight: theme.spacing(3),
+    [theme.breakpoints.up(400 + theme.spacing(3 * 2))]: {
+      width: 400,
+      marginLeft: "auto",
+      marginRight: "auto",
+    },
+  },
+  paper: {
+    marginTop: "80px",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    padding: `${theme.spacing(2)}px ${theme.spacing(3)}px ${theme.spacing(
+      3
+    )}px`,
+  },
+  form: {
+    width: "100%", // Fix IE 11 issue.
+    marginTop: theme.spacing(1),
+  },
+  title: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    color: "#4A4A4A",
+    fontSize: "2em",
+    fontWeight: "540",
+    fontFamily: "sans-serif",
+    marginBottom: "20px",
+    width: "fit-content",
+    "& p": {
+      borderBottom: "2.5px solid #D94939",
+      width: "80%",
+      margin: "5px 0 0 0",
+    },
+  },
+  submit: {
+    display: "flex",
+    justifyContent: "center",
+    width: "-webkit-fill-available",
+    marginTop: "12px",
+  },
+  backBtn: {
+    top: "20px",
+    left: "15px",
+    position: "absolute",
+    color: "#4A4A4A",
+    "@media (min-width: 640px)": {
+      display: "none",
+    },
+  },
+  input: {
+    "& input[type=number]": {
+      "-moz-appearance": "textfield",
+    },
+    "& input[type=number]::-webkit-outer-spin-button": {
+      "-webkit-appearance": "none",
+      margin: 0,
+    },
+    "& input[type=number]::-webkit-inner-spin-button": {
+      "-webkit-appearance": "none",
+      margin: 0,
+    },
+    "& label.Mui-focused": {
+      color: "#D94939",
+    },
+    "& .MuiOutlinedInput-root": {
+      "&.Mui-focused fieldset": {
+        "border-color": "#D94939",
       },
     },
-    main: {
-      width: "auto",
-      display: "block", // Fix IE 11 issue.
-      marginLeft: theme.spacing(3),
-      marginRight: theme.spacing(3),
-      [theme.breakpoints.up(400 + theme.spacing(3*2))]: {
-        width: 400,
-        marginLeft: "auto",
-        marginRight: "auto",
-      },
-    },
-    paper: {
-      marginTop: '80px',
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      padding: `${theme.spacing(2)}px ${theme.spacing(3)}px ${
-        theme.spacing(3)
-      }px`,
-    },
-    form: {
-      width: "100%", // Fix IE 11 issue.
-      marginTop: theme.spacing(1),
-    },
-    title: {
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      color: "#4A4A4A",
-      fontSize: "2em",
-      fontWeight: "540",
-      fontFamily: "sans-serif",
-      marginBottom: "20px",
-      width: "fit-content",
-      "& p": {
-        borderBottom: "2.5px solid #D94939",
-        width: "80%",
-        margin: "5px 0 0 0",
-      },
-    },
-    submit: {
-      display: "flex",
-      justifyContent: "center",
-      width: '-webkit-fill-available',
-      marginTop: '12px'
-    },
-    backBtn: {
-      top: '20px',
-      left: '15px',
-      position: "absolute",
-      color: "#4A4A4A",
-      "@media (min-width: 640px)": {
-        display: "none"
-      },
-    },
-    input: {
-      "& input[type=number]": {
-        "-moz-appearance": "textfield",
-      },
-      "& input[type=number]::-webkit-outer-spin-button": {
-        "-webkit-appearance": "none",
-        margin: 0,
-      },
-      "& input[type=number]::-webkit-inner-spin-button": {
-        "-webkit-appearance": "none",
-        margin: 0,
-      },
-      "& label.Mui-focused": {
-        color: "#D94939",
-      },
-      "& .MuiOutlinedInput-root": {
-        "&.Mui-focused fieldset": {
-          "border-color": "#D94939",
-        },
-      },
-    },
-  });
-  
+  },
+});
 
 function Signup(props) {
   const { classes } = props;
@@ -113,6 +112,52 @@ function Signup(props) {
   const [isValidEmail, setIsValidEmail] = useState(false);
   const [isValidMobile, setIsValidMobile] = useState(false);
   const [isValidCity, setIsValidCity] = useState(false);
+  const [permission, setPermission] = useState("");
+  useEffect(() => {
+    getLatLong();
+  });
+
+  var options = {
+    enableHighAccuracy: true,
+    timeout: 5000,
+    maximumAge: 0,
+  };
+  function success(pos) {}
+
+  function errors(err) {
+    console.warn(`ERROR(${err.code}): ${err.message}`);
+  }
+
+  const getLatLong = () => {
+    if (navigator.geolocation) {
+      navigator.permissions
+        .query({ name: "geolocation" })
+        .then(function (result) {
+          if (result.state === "granted") {
+            //console.log(result.state);
+            //If granted then you can directly call your function here
+            navigator.geolocation.getCurrentPosition(success);
+          } else if (result.state === "prompt") {
+            navigator.geolocation.getCurrentPosition(success, errors, options);
+          } else if (result.state === "denied") {
+            //If denied then you have to show instructions to enable location
+          }
+
+          result.onchange = function () {
+            //console.log(result.state);
+            setPermission(result.state);
+          };
+        });
+    } else {
+      alert("Sorry Not available!");
+    }
+  };
+
+  async function getLocation(name) {
+    var cityName = await getLocationFromIP();
+    console.log("cityname ", cityName);
+    setCity(cityName);
+  }
 
   return (
     <div className={classes.container}>
@@ -198,6 +243,30 @@ function Signup(props) {
                   isValidMobile ? "Please enter only 10 digits number" : null
                 }
               />
+            </FormControl>
+
+            {permission === "granted" ? (
+              <FormControl margin="normal" required fullWidth>
+                <TextField
+                  className={classes.input}
+                  id="outlined-city"
+                  label="City"
+                  type="text"
+                  variant="outlined"
+                  value={city}
+                  onClick={(e) => getLocation(e.target.value)}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <LocationOn />
+                      </InputAdornment>
+                    ),
+                  }}
+                  error={isValidCity ? true : false}
+                  helperText={isValidCity ? "Please enter valid city" : null}
+                />
+              </FormControl>
+            ) : (
               <FormControl margin="normal" required fullWidth>
                 <TextField
                   className={classes.input}
@@ -218,7 +287,8 @@ function Signup(props) {
                   helperText={isValidCity ? "Please enter valid city" : null}
                 />
               </FormControl>
-            </FormControl>
+            )}
+
             <div className={classes.submit}>
               <div onClick={() => submit()}>
                 <svg
@@ -254,14 +324,13 @@ function Signup(props) {
       } else if (email.length === 0) {
         setIsValidEmail(true);
         setIsValidName(false);
-      } 
-      else if(!validateEmail(email)){
+      } else if (!validateEmail(email)) {
         setIsValidEmail(true);
         setIsValidName(false);
-      }else if (phoneNumber.length !== 10) {
+      } else if (phoneNumber.length !== 10) {
         setIsValidMobile(true);
         setIsValidEmail(false);
-      } else if (city.length === 0) {
+      } else if (city.length <= 3) {
         setIsValidCity(true);
         setIsValidMobile(false);
       } else {
@@ -269,7 +338,7 @@ function Signup(props) {
         setIsValidEmail(false);
         setIsValidMobile(false);
         setIsValidCity(false);
-        props.history.replace("/verification");
+        props.history.push("/verification");
       }
     } catch (error) {
       //alert(error.message);
